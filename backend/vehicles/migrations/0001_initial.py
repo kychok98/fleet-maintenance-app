@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('year', models.IntegerField()),
                 ('vin', models.CharField(max_length=17, unique=True)),
                 ('mileage', models.IntegerField()),
-                ('last_service_date', models.DateField(default=django.utils.timezone.now, blank=True, null=True)),
+                ('last_service_date', models.DateField(default=django.utils.timezone.now)),
             ],
         ),
     ]

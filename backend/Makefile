@@ -1,6 +1,6 @@
 PYTHON=python3
 
-.PHONY: run-server make-migration apply-migration
+.PHONY: run-server migration-generate migration-apply migration-apply-fake migration-apply-single
 
 run-server:
 	PYTHON manage.py runserver
@@ -10,3 +10,11 @@ migration-generate:
 
 migration-apply:
 	PYTHON manage.py migrate
+
+migration-apply-fake:
+	PYTHON manage.py migrate --fake $(APP) $(NAME)
+
+migration-apply-single:
+	PYTHON manage.py migrate $(APP) $(NAME)
+
+default: run-server
