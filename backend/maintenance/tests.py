@@ -12,19 +12,19 @@ class MaintenanceModelTest(TestCase):
         self.vehicle = Vehicle.objects.create(make='Toyota', model='Camry', year=2020, vin='VIN123', mileage=12000)
         self.maintenance_manual = Maintenance.objects.create(
             vehicle=self.vehicle,
-            service_type='Oil Change',
-            service_date=date(2024, 8, 1),
+            description='Oil Change',
+            schedule_date=date(2024, 8, 1),
             schedule_type='manual'
         )
         self.maintenance_auto = Maintenance.objects.create(
             vehicle=self.vehicle,
-            service_type='Tire Rotation',
-            service_date=date(2024, 8, 1),
+            description='Tire Rotation',
+            schedule_date=date(2024, 8, 1),
             schedule_type='auto'
         )
 
-    def test_manual_schedule_does_not_set_next_service_date(self):
-        self.assertIsNone(self.maintenance_manual.next_service_date)
+    def test_manual_schedule_does_not_set_next_schedule_date(self):
+        self.assertIsNone(self.maintenance_manual.next_schedule_date)
 
-    def test_auto_schedule_sets_next_service_date(self):
-        self.assertEqual(self.maintenance_auto.next_service_date, date(2025, 1, 28))  # 6 months later
+    def test_auto_schedule_sets_next_schedule_date(self):
+        self.assertEqual(self.maintenance_auto.next_schedule_date, date(2025, 1, 28))  # 6 months later

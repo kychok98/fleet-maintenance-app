@@ -19,7 +19,7 @@ def api_overview(request):
 
 @api_view(['GET'])
 def list_maintenance(request):
-    sort_by = request.query_params.get('sort_by', 'service_date')
+    sort_by = request.query_params.get('sort_by', '-schedule_date')
 
     maintenances = Maintenance.objects.all().order_by(sort_by)
     serializer = MaintenanceSerializer(maintenances, many=True)

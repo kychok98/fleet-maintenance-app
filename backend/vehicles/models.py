@@ -1,30 +1,35 @@
 from datetime import timedelta
+from enum import Enum
 
 from django.db import models
 from django.utils import timezone
 
 
+class VehicleStatus(Enum):
+    ACTIVE = 'active'
+    INACTIVE = 'inactive'
+    PENDING = 'pending'
+
 class Vehicle(models.Model):
+    MILEAGE_THRESHOLD = 5000
+
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.IntegerField()
     vin = models.CharField(max_length=17, unique=True)
 
     mileage = models.IntegerField()
-    last_service_date = models.DateField(null=True, blank=True)
-
-    def calculate_expected_maintenance_count(self):
-        """Calculate the number of expected maintenance records based on mileage."""
-        mileage_threshold = 5000
-        return self.mileage // mileage_threshold
+    last_service_date = models.DateField(default=timezone.now)
 
     @property
     def status(self):
+        if self.mileage < self.MILEAGE_THRESHOLD:
+            return VehicleStatus.ACTIVE.value
+        if self.maintenances.count() < self.mileage // self.MILEAGE_THRESHOLD:
+            return VehicleStatus.INACTIVE.value
         if self.maintenances.filter(completion_date__isnull=True).exists():
-            return 'Upcoming'
-        if self.maintenances.count() < self.calculate_expected_maintenance_count():
-            return 'Pending'
-        return 'Healthy'
+            return VehicleStatus.PENDING.value
+        return VehicleStatus.ACTIVE.value
 
     def __str__(self):
         return f"{self.year} {self.make} {self.model} ({self.vin}) - {self.status}"
@@ -37,7 +42,7 @@ class Vehicle(models.Model):
                 vehicle=self,
                 description="Predictive maintenance required",
                 schedule_type="auto",
-                schedule_date=timezone.now() + timedelta(days=60),
+                schedule_date=timezone.now() + timedelta(days=7),
             )
 
     def save(self, *args, **kwargs):

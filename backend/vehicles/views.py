@@ -3,8 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .decorators import vehicle_exists
-from .models import Vehicle
 from .serializers import VehicleSerializer
+from .services import VehicleService
 
 
 @api_view(['GET'])
@@ -21,8 +21,10 @@ def api_overview(request):
 
 @api_view(['GET'])
 def list_vehicles(request):
-    sort_by = request.query_params.get('sort_by', 'id')
-    data = Vehicle.objects.all().order_by(sort_by)
+    sort_by = request.query_params.get('sort_by', '-last_service_date')
+    status_filter = request.query_params.get('status', None)
+
+    data = VehicleService.get_vehicles(sort_by, status_filter)
     serializer = VehicleSerializer(data, many=True)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
