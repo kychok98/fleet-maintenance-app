@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type { Table } from "@tanstack/vue-table";
-import { computed } from "vue";
-import type { Task } from "@/components/Vehicle/data/schema.ts";
-import { MixerHorizontalIcon } from "@radix-icons/vue";
+import type { TVehicle } from "@/modules/Vehicle/services/schema.ts";
 
 import { Button } from "@/lib/ui/button";
 import {
@@ -13,9 +10,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/lib/ui/dropdown-menu";
+import { MixerHorizontalIcon } from "@radix-icons/vue";
+import type { Table } from "@tanstack/vue-table";
+import { computed } from "vue";
 
 interface DataTableViewOptionsProps {
-  table: Table<Task>;
+  table: Table<TVehicle>;
 }
 
 const props = defineProps<DataTableViewOptionsProps>();

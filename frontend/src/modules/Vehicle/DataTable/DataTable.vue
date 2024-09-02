@@ -1,26 +1,5 @@
 <script setup lang="ts">
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-} from "@tanstack/vue-table";
-import {
-  FlexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useVueTable,
-} from "@tanstack/vue-table";
-
-import { ref } from "vue";
-import type { Task } from "@/components/Vehicle/data/schema.ts";
-import DataTablePagination from "./DataTablePagination.vue";
-import DataTableToolbar from "./DataTableToolbar.vue";
-import { valueUpdater } from "@/lib/utils.ts";
+import type { TVehicle } from "@/modules/Vehicle/services/schema.ts";
 import {
   Table,
   TableBody,
@@ -29,15 +8,30 @@ import {
   TableHeader,
   TableRow,
 } from "@/lib/ui/table";
+import { valueUpdater } from "@/lib/utils.ts";
+import type {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+} from "@tanstack/vue-table";
+import {
+  FlexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useVueTable,
+} from "@tanstack/vue-table";
+
+import { ref } from "vue";
+import DataTablePagination from "./DataTablePagination.vue";
+import DataTableToolbar from "./DataTableToolbar.vue";
 
 interface DataTableProps {
-  columns: ColumnDef<Task, any>[];
-  data: Task[];
+  columns: ColumnDef<TVehicle, any>[];
+  data: TVehicle[];
 }
 const props = defineProps<DataTableProps>();
 
 const sorting = ref<SortingState>([]);
-const columnFilters = ref<ColumnFiltersState>([]);
 const columnVisibility = ref<VisibilityState>({});
 const rowSelection = ref({});
 
@@ -52,9 +46,6 @@ const table = useVueTable({
     get sorting() {
       return sorting.value;
     },
-    get columnFilters() {
-      return columnFilters.value;
-    },
     get columnVisibility() {
       return columnVisibility.value;
     },
@@ -64,18 +55,12 @@ const table = useVueTable({
   },
   enableRowSelection: true,
   onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
-  onColumnFiltersChange: (updaterOrValue) =>
-    valueUpdater(updaterOrValue, columnFilters),
   onColumnVisibilityChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, columnVisibility),
   onRowSelectionChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, rowSelection),
   getCoreRowModel: getCoreRowModel(),
-  getFilteredRowModel: getFilteredRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
-  getFacetedRowModel: getFacetedRowModel(),
-  getFacetedUniqueValues: getFacetedUniqueValues(),
 });
 </script>
 

@@ -16,3 +16,7 @@ export function valueUpdater<T extends Updater<any>>(
       ? updaterOrValue(ref.value)
       : updaterOrValue;
 }
+
+export function formatNumberWithCommas(num: number): string {
+  return num.toLocaleString("en-US");
+}

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { TVehicle } from "@/modules/Vehicle/services/schema.ts";
 import { Button } from "@/lib/ui/button";
 import {
   DropdownMenu,
@@ -16,10 +17,9 @@ import {
   EyeNoneIcon,
 } from "@radix-icons/vue";
 import type { Column } from "@tanstack/vue-table";
-import type { Task } from "@/components/Vehicle/data/schema.ts";
 
 interface DataTableColumnHeaderProps {
-  column: Column<Task, any>;
+  column: Column<TVehicle, any>;
   title: string;
 }
 

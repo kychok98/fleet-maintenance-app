@@ -1,32 +1,22 @@
 <script setup lang="ts">
+import type { TVehicle } from "@/modules/Vehicle/services/schema.ts";
 import { Button } from "@/lib/ui/button";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/lib/ui/dropdown-menu";
 import { DotsHorizontalIcon } from "@radix-icons/vue";
 import type { Row } from "@tanstack/vue-table";
-import { computed } from "vue";
-import { labels } from "../data/constants.ts";
-import type { Task } from "@/components/Vehicle/data/schema.ts";
-import { taskSchema } from "@/components/Vehicle/data/schema.ts";
 
 interface DataTableRowActionsProps {
-  row: Row<Task>;
+  row: Row<TVehicle>;
 }
-const props = defineProps<DataTableRowActionsProps>();
-
-const task = computed(() => taskSchema.parse(props.row.original));
+defineProps<DataTableRowActionsProps>();
 </script>
 
 <template>
@@ -45,20 +35,6 @@ const task = computed(() => taskSchema.parse(props.row.original));
       <DropdownMenuItem>Make a copy</DropdownMenuItem>
       <DropdownMenuItem>Favorite</DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuSub>
-        <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-        <DropdownMenuSubContent>
-          <DropdownMenuRadioGroup :value="task.label">
-            <DropdownMenuRadioItem
-              v-for="label in labels"
-              :key="label.value"
-              :value="label.value"
-            >
-              {{ label.label }}
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-        </DropdownMenuSubContent>
-      </DropdownMenuSub>
       <DropdownMenuSeparator />
       <DropdownMenuItem>
         Delete
