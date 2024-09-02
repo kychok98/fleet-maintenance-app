@@ -1,7 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import LandingView from "@/views/LandingView.vue";
+</script>
 
 <template>
-  <div class="bg-red-50">
-    <span>Hello world</span>
-  </div>
+  <LandingView />
 </template>
