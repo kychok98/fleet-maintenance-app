@@ -1,27 +1,29 @@
 <script setup lang="ts">
-import type { TVehicle } from "@/modules/Vehicle/services/schema.ts";
 import { Button } from "@/lib/ui/button";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/lib/ui/dropdown-menu";
 import { DotsHorizontalIcon } from "@radix-icons/vue";
 import type { Row } from "@tanstack/vue-table";
+import { ref } from "vue";
+import DialogDelete from "../Dialog/DialogDelete.vue";
+import type { TVehicle } from "../services/schema.ts";
 
 interface DataTableRowActionsProps {
   row: Row<TVehicle>;
 }
 defineProps<DataTableRowActionsProps>();
+
+const openDelete = ref(false);
 </script>
 
 <template>
   <DropdownMenu>
-    <DropdownMenuTrigger as-child>
+    <DropdownMenuTrigger>
       <Button
         variant="ghost"
         class="data-[state=open]:bg-muted flex h-8 w-8 p-0"
@@ -32,14 +34,13 @@ defineProps<DataTableRowActionsProps>();
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="w-[160px]">
       <DropdownMenuItem>Edit</DropdownMenuItem>
-      <DropdownMenuItem>Make a copy</DropdownMenuItem>
-      <DropdownMenuItem>Favorite</DropdownMenuItem>
-      <DropdownMenuSeparator />
-      <DropdownMenuSeparator />
-      <DropdownMenuItem>
-        Delete
-        <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-      </DropdownMenuItem>
+      <DropdownMenuItem @click="openDelete = true">Delete</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
+
+  <DialogDelete
+    :row="row"
+    :open="openDelete"
+    @update:open="(val: boolean) => (openDelete = val)"
+  />
 </template>
