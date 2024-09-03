@@ -4,7 +4,7 @@ export const vehicleSchema = z.object({
   id: z.number(),
   make: z.string(),
   model: z.string(),
-  year: z.number().int().min(1886), // Assuming cars didn't exist before 1886
+  year: z.number().int().min(1886),
   vin: z.string(),
   mileage: z.number().int().nonnegative(),
   last_service_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), // Validating date format YYYY-MM-DD
@@ -12,3 +12,12 @@ export const vehicleSchema = z.object({
 });
 
 export type TVehicle = z.infer<typeof vehicleSchema>;
+
+export const vehicleUpdateSchema = z.object({
+  make: z.string(),
+  model: z.string(),
+  year: z.number().int().min(1886),
+  mileage: z.number().int().nonnegative(),
+});
+
+export type VehicleUpdateParam = z.infer<typeof vehicleUpdateSchema>;

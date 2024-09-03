@@ -18,7 +18,7 @@ import {
 } from "radix-vue";
 import { computed } from "vue";
 import { TVehicle } from "../services/schema.ts";
-import { deleteVehicles } from "../services/VehicleService.ts";
+import { deleteVehicle } from "../services/VehicleService.ts";
 
 interface IProps extends DialogRootProps {
   row: Row<TVehicle>;
@@ -44,7 +44,7 @@ const queryClient = useQueryClient();
 const { isPending, mutate } = useMutation({
   mutationFn: async (id: number) => {
     console.log("id: ", id);
-    await deleteVehicles(id);
+    await deleteVehicle(id);
     await queryClient.invalidateQueries({ queryKey: ["vehicles"] });
     emits("update:open", false);
     return true;

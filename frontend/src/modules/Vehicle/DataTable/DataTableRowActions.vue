@@ -11,6 +11,7 @@ import { DotsHorizontalIcon } from "@radix-icons/vue";
 import type { Row } from "@tanstack/vue-table";
 import { ref } from "vue";
 import DialogDelete from "../Dialog/DialogDelete.vue";
+import DialogEdit from "../Dialog/DialogEdit.vue";
 import type { TVehicle } from "../services/schema.ts";
 
 interface DataTableRowActionsProps {
@@ -19,6 +20,7 @@ interface DataTableRowActionsProps {
 defineProps<DataTableRowActionsProps>();
 
 const openDelete = ref(false);
+const openEdit = ref(false);
 </script>
 
 <template>
@@ -33,11 +35,16 @@ const openDelete = ref(false);
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="w-[160px]">
-      <DropdownMenuItem>Edit</DropdownMenuItem>
+      <DropdownMenuItem @click="openEdit = true">Edit</DropdownMenuItem>
       <DropdownMenuItem @click="openDelete = true">Delete</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 
+  <DialogEdit
+    :row="row"
+    :open="openEdit"
+    @update:open="(val: boolean) => (openEdit = val)"
+  />
   <DialogDelete
     :row="row"
     :open="openDelete"
