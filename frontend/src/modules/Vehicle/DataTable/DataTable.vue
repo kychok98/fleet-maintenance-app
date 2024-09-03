@@ -22,7 +22,6 @@ import {
 } from "@tanstack/vue-table";
 
 import { ref } from "vue";
-import DataTablePagination from "./DataTablePagination.vue";
 import DataTableToolbar from "./DataTableToolbar.vue";
 
 interface DataTableProps {
@@ -107,7 +106,5 @@ const table = useVueTable({
         </TableBody>
       </Table>
     </div>
-
-    <DataTablePagination :table="table" />
   </div>
 </template>

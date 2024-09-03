@@ -41,8 +41,9 @@ const openEdit = ref(false);
   </DropdownMenu>
 
   <DialogEdit
+    v-if="openEdit"
     :row="row"
-    :open="openEdit"
+    open
     @update:open="(val: boolean) => (openEdit = val)"
   />
   <DialogDelete

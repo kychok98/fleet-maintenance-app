@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { Input } from "@/lib/ui/input";
+import { InputProps } from "@/lib/ui/input/Input.vue";
 import { useVModel } from "@vueuse/core";
 import { computed } from "vue";
 
-interface EditableFieldProps {
+interface EditableFieldProps extends InputProps {
   id: string;
   label: string;
-  modelValue: string | number;
-  readonly?: boolean;
 }
 
 const props = defineProps<EditableFieldProps>();
@@ -16,7 +15,7 @@ const delegatedProps = computed(() => {
   return delegated;
 });
 
-const vmodel = useVModel(props, "modelValue");
+const model = useVModel(props, "modelValue");
 </script>
 
 <template>
@@ -25,6 +24,6 @@ const vmodel = useVModel(props, "modelValue");
       {{ label }}:
     </label>
 
-    <Input v-model="vmodel" v-bind="delegatedProps" class="flex-1" />
+    <Input v-bind="delegatedProps" v-model="model" class="flex-1" />
   </fieldset>
 </template>

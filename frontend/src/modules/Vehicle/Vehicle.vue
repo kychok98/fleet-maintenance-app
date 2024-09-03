@@ -5,7 +5,7 @@ import { columns } from "./DataTable/columns.ts";
 import DataTable from "./DataTable/DataTable.vue";
 import { getVehicles } from "./services/VehicleService.ts";
 
-const { isLoading, isFetching, data } = useQuery({
+const { isLoading, data } = useQuery({
   queryKey: ["vehicles"],
   queryFn: getVehicles,
 });

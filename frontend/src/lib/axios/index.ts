@@ -19,11 +19,11 @@ axios.interceptors.response.use(
   async (response) => {
     return response;
   },
-  async (err: AxiosError<{ error?: string; message?: string }>) => {
+  async (err: AxiosError<any>) => {
     toast({
       title: "API Error",
       description:
-        err.response?.data?.error ?? err.response?.data?.message ?? err.message,
+        err.response?.data ?? err.response?.data?.message ?? err.message,
       variant: "destructive",
     });
     console.error(err);

@@ -13,7 +13,6 @@ export const columns: ColumnDef<TVehicle>[] = [
     accessorKey: "vin",
     header: ({ column }) => h(DataTableColumnHeader, { column, title: "VIN" }),
     cell: ({ row }) => h("div", { class: "w-12" }, row.getValue("vin")),
-    enableSorting: false,
     enableHiding: false,
   },
   {
@@ -22,7 +21,7 @@ export const columns: ColumnDef<TVehicle>[] = [
       h(DataTableColumnHeader, { column, title: "Model" }),
     cell: ({ row }) => {
       const label = `${row.original.make} ${row.original.model}`;
-      return h("div", { class: "truncate w-40" }, label);
+      return h("div", { class: "truncate min-w-40" }, label);
     },
   },
   {

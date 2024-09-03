@@ -38,6 +38,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 const state = ref(structuredClone(toRaw(props.row.original)));
 
 const { toast } = useToast();
+const queryClient = useQueryClient();
 
 const { isPending, mutate } = useMutation({
   mutationFn: async (id: number) => {
@@ -50,7 +51,6 @@ const { isPending, mutate } = useMutation({
   },
   onSettled: async (data) => {
     if (data) {
-      const queryClient = useQueryClient();
       await queryClient.invalidateQueries({ queryKey: ["vehicles"] });
       toast({
         title: "Vehicle Updated Success!",
