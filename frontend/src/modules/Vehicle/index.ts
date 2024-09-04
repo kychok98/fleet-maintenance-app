@@ -1,1 +1,1 @@
-export { default as Vehicle } from "./Vehicle.vue";
+export { default as VehicleLanding } from "./VehicleLanding.vue";

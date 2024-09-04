@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Vehicle } from "@/modules/Vehicle";
+import { Layout } from "@/components/Layout";
 </script>
 
 <template>
-  <div class="container my-4 rounded border shadow">
-    <Vehicle />
-  </div>
+  <Layout>
+    <router-view />
+  </Layout>
 </template>

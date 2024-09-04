@@ -13,14 +13,7 @@ const { isLoading, data } = useQuery({
 
 <template>
   <Loading v-if="isLoading" />
-  <div v-else class="h-full flex-1 flex-col space-y-8 p-8 md:flex">
-    <div class="flex items-center justify-between space-y-2">
-      <div>
-        <h2 class="text-2xl font-bold tracking-tight">
-          Fleet Maintenance Dashboard
-        </h2>
-      </div>
-    </div>
+  <div v-else class="h-full flex-1 flex-col md:flex">
     <DataTable :data="data || []" :columns="columns" />
   </div>
 </template>
