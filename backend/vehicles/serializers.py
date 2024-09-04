@@ -7,7 +7,7 @@ class VehicleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vehicle
         fields = ['id', 'make', 'model', 'year', 'vin', 'mileage', 'last_service_date', 'status']
-        read_only_fields = ['id', 'vin', 'mileage', 'last_service_date', 'status']
+        read_only_fields = ['id', 'vin', 'last_service_date', 'status']
 
     def create(self, validated_data):
         vehicle = Vehicle.objects.create(
@@ -18,6 +18,7 @@ class VehicleSerializer(serializers.ModelSerializer):
         return vehicle
 
     def validate(self, data):
-        # todo: Validate mileage cannot decrease.
-        # todo: Validate mileage proceed to maintenance to prevent vehicle from inactive status
+        if data['mileage'] < getattr(self.instance, 'mileage'):
+            raise serializers.ValidationError({"mileage":"cannot be decrement."})
+
         return data

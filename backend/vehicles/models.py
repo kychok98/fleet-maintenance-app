@@ -1,8 +1,7 @@
-from datetime import timedelta, date
+from datetime import date
 from enum import Enum
 
 from django.db import models
-from django.utils import timezone
 
 
 class VehicleStatus(Enum):
@@ -23,27 +22,17 @@ class Vehicle(models.Model):
 
     @property
     def status(self):
-        if self.mileage < self.MILEAGE_THRESHOLD:
-            return VehicleStatus.ACTIVE.value
-        if self.maintenances.count() < self.mileage // self.MILEAGE_THRESHOLD:
-            return VehicleStatus.INACTIVE.value
         if self.maintenances.filter(completion_date__isnull=True).exists():
             return VehicleStatus.PENDING.value
-        return VehicleStatus.ACTIVE.value
+
+        next_mileage = self.MILEAGE_THRESHOLD * (self.maintenances.count() + 1)
+        if self.mileage < next_mileage:
+            return VehicleStatus.ACTIVE.value
+
+        return VehicleStatus.INACTIVE.value
 
     def __str__(self):
         return f"{self.year} {self.make} {self.model} ({self.vin}) - {self.status}"
-
-    def schedule_predictive_maintenance(self):
-        # Check if mileage is a multiple of 5000 and no maintenance record exists
-        if self.mileage and self.mileage % 5000 == 0 and not self.maintenances.filter(
-                schedule_date__gte=self.last_service_date).exists():
-            self.maintenances.create(
-                vehicle=self,
-                description="Predictive maintenance required",
-                schedule_type="auto",
-                schedule_date=timezone.now() + timedelta(days=7),
-            )
 
     def save(self, *args, **kwargs):
         if not self.vin:  # If the VIN is not set, generate a new one
@@ -55,5 +44,4 @@ class Vehicle(models.Model):
                 new_vin_num = 1
             self.vin = f'VIN{new_vin_num:03d}'  # Format the VIN as VIN001, VIN002, etc.
 
-        self.schedule_predictive_maintenance()
         super().save(*args, **kwargs)
