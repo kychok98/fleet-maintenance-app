@@ -62,7 +62,7 @@ const handleSave = () => {
     const zodError = error as ZodError;
     toast({
       title: "Validation Error",
-      description: zodError.message,
+      description: zodError.errors.map((err) => err.message).join(", "),
       variant: "destructive",
     });
   }
@@ -73,7 +73,9 @@ const handleSave = () => {
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Add Vehicle</DialogTitle>
-        <DialogDescription> Click save when you're done. </DialogDescription>
+        <DialogDescription class="text-sm">
+          Click save when you're done.
+        </DialogDescription>
         <div class="mt-4">
           <EditableField
             id="make"

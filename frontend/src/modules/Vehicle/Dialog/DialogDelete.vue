@@ -65,7 +65,7 @@ const { isPending, mutate } = useMutation({
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Are you sure you want to remove?</DialogTitle>
-        <DialogDescription class="flex flex-col space-y-2">
+        <DialogDescription class="flex flex-col space-y-2 text-sm">
           <b class="text-xl">{{ label }}</b>
           <span>
             This action cannot be undone, and will permanently delete all

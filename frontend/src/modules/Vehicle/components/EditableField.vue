@@ -20,10 +20,13 @@ const model = useVModel(props, "modelValue");
 
 <template>
   <fieldset class="mb-3 flex items-center gap-2">
-    <label :for="id" class="text-grass11 w-[130px] text-right text-[15px]">
+    <label :for="id" class="w-[130px] text-right text-[15px]">
       {{ label }}:
     </label>
 
-    <Input v-bind="delegatedProps" v-model="model" class="flex-1" />
+    <div v-if="readonly" class="flex items-center space-x-2 px-3">
+      <span> {{ modelValue }} </span>
+    </div>
+    <Input v-else v-bind="delegatedProps" v-model="model" class="flex-1" />
   </fieldset>
 </template>

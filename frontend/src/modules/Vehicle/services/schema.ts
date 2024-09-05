@@ -23,8 +23,8 @@ export const vehicleUpdateSchema = z.object({
 export type VehicleUpdateParam = z.infer<typeof vehicleUpdateSchema>;
 
 export const vehicleAddSchema = z.object({
-  make: z.string().min(1, "Make is required"),
-  model: z.string().min(1, "Model is required"),
+  make: z.string().min(3, "Make is required"),
+  model: z.string().min(3, "Model is required"),
   year: z.number().int().min(1886),
 });
 

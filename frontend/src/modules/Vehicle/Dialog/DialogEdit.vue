@@ -66,7 +66,7 @@ const { isPending, mutate } = useMutation({
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Edit Vehicle</DialogTitle>
-        <DialogDescription>
+        <DialogDescription class="text-sm">
           Click save changes when you're done.
         </DialogDescription>
         <div class="mt-4">
@@ -77,10 +77,10 @@ const { isPending, mutate } = useMutation({
           <EditableField id="mileage" v-model="state.mileage" label="Mileage" />
 
           <fieldset class="mb-[15px] flex items-center gap-2">
-            <label class="text-grass11 w-[130px] text-right text-[15px]">
+            <label class="w-[130px] text-right text-[15px]">
               Last Service Date:
             </label>
-            <div class="flex items-center space-x-2 px-3 text-sm">
+            <div class="flex items-center space-x-2 px-3">
               <span> {{ state.last_service_date }} </span>
               <Badge :variant="statusVariants[state.status]">
                 {{ state.status.toUpperCase() }}

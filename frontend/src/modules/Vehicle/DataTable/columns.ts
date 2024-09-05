@@ -18,7 +18,7 @@ export const columns: ColumnDef<TVehicle>[] = [
   {
     accessorKey: "model",
     header: ({ column }) =>
-      h(DataTableColumnHeader, { column, title: "Model" }),
+      h(DataTableColumnHeader, { column, title: "Car Model" }),
     cell: ({ row }) => {
       const label = `${row.original.make} ${row.original.model}`;
       return h("div", { class: "truncate min-w-40" }, label);
