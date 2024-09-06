@@ -1,11 +1,11 @@
+import DataTableColumnHeader from "@/components/DataTable/DataTableColumnHeader.vue";
 import { formatNumberWithCommas } from "@/lib/utils.ts";
 import type { ColumnDef } from "@tanstack/vue-table";
 import { twMerge } from "tailwind-merge";
 import { h } from "vue";
-import BadgeStatus from "../components/BadgeStatus.vue";
 import type { TVehicle } from "../services/schema.ts";
-import DataTableColumnHeader from "./DataTableColumnHeader.vue";
-import DataTableRowActions from "./DataTableRowActions.vue";
+import BadgeStatus from "./components/BadgeStatus.vue";
+import DataTableRowActions from "./components/DataTableRowActions.vue";
 
 export const columns: ColumnDef<TVehicle>[] = [
   {

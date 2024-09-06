@@ -7,12 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/lib/ui/dropdown-menu";
-import DialogView from "@/modules/Vehicle/Dialog/DialogView.vue";
 import { DotsHorizontalIcon } from "@radix-icons/vue";
 import type { Row } from "@tanstack/vue-table";
 import { ref } from "vue";
 import DialogDelete from "../Dialog/DialogDelete.vue";
 import DialogEdit from "../Dialog/DialogEdit.vue";
+import DialogView from "../Dialog/DialogView.vue";
 import type { TVehicle } from "../services/schema.ts";
 
 interface DataTableRowActionsProps {

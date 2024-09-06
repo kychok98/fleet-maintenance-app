@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import DataTableViewOptions from "@/components/DataTable/DataTableViewOptions.vue";
 import { Button } from "@/lib/ui/button";
 import { PlusIcon, ResetIcon } from "@radix-icons/vue";
 import type { Table } from "@tanstack/vue-table";
 import { ref } from "vue";
 import DialogAdd from "../Dialog/DialogAdd.vue";
 import type { TVehicle } from "../services/schema.ts";
-import DataTableViewOptions from "./DataTableViewOptions.vue";
 
 interface DataTableToolbarProps {
   table: Table<TVehicle>;

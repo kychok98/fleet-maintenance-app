@@ -22,7 +22,6 @@ import {
 } from "@tanstack/vue-table";
 
 import { ref } from "vue";
-import DataTableToolbar from "./DataTableToolbar.vue";
 
 interface DataTableProps {
   columns: ColumnDef<TVehicle, any>[];
@@ -65,7 +64,7 @@ const table = useVueTable({
 
 <template>
   <div class="space-y-4">
-    <DataTableToolbar :table="table" />
+    <slot name="toolbar" :table="table" />
     <div class="rounded-md border">
       <Table>
         <TableHeader>
