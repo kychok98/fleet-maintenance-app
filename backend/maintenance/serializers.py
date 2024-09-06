@@ -5,11 +5,11 @@ from .models import Maintenance
 
 
 class MaintenanceSerializer(serializers.ModelSerializer):
-    vehicle = serializers.PrimaryKeyRelatedField(queryset=Vehicle.objects.all())
+    vehicle_id = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Maintenance
-        fields = ['id', 'vehicle', 'description', 'schedule_type', 'schedule_date', 'completion_date']
+        fields = ['id', 'schedule_date', 'completion_date', 'vehicle_id', 'description', 'schedule_type']
         read_only_fields = ['id']
 
     def validate(self, data):

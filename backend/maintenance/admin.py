@@ -6,7 +6,7 @@ from .models import Maintenance
 @admin.register(Maintenance)
 class MaintenanceAdmin(admin.ModelAdmin):
     list_display = ('vehicle__last_service_date', 'vehicle__mileage', 'vehicle','description', 'schedule_type', 'schedule_date', 'completion_date')
-    search_fields = ('description', 'vehicle__vin')
+    search_fields = ('description', 'vehicle__id')
     list_filter = ('schedule_type', 'schedule_date', 'completion_date')
     date_hierarchy = 'schedule_date'
 

@@ -30,7 +30,6 @@ def create_dummy_vehicles_and_maintenance(apps, schema_editor):
     for i in range(50):
         make, model = random.choice(makes_and_models)
         year = random.randint(2015, 2022)
-        vin = f"VIN{str(i + 1).zfill(3)}"
         mileage = random.randint(1000, 20000)
         last_service_date = datetime.date(2024, random.randint(1, 8), random.randint(1, 28))
 
@@ -38,7 +37,6 @@ def create_dummy_vehicles_and_maintenance(apps, schema_editor):
             make=make,
             model=model,
             year=year,
-            vin=vin,
             mileage=mileage,
             last_service_date=timezone.now() if mileage < 5000  else last_service_date
         )
@@ -52,10 +50,10 @@ def create_dummy_vehicles_and_maintenance(apps, schema_editor):
                 maintenance_mileage += 5000
                 maintenance=Maintenance(
                     vehicle=vehicle,
-                    schedule_type='auto',
+                    schedule_type='auto' if random.choice([True, False]) else 'manual',
                     schedule_date=last_service_date,
                     completion_date=None if maintenance_mileage > mileage else last_service_date,
-                    description='Backdate Routine maintenance'
+                    description='Backdated Routine maintenance'
                 )
                 maintenances.append(maintenance)
 

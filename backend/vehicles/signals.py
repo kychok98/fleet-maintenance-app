@@ -20,7 +20,7 @@ def schedule_predictive_maintenance(sender, instance, **kwargs):
         if not has_pending:
             instance.maintenances.create(
                 vehicle=instance,
-                description="Predictive maintenance required",
+                description="Predictive maintenance",
                 schedule_type="auto",
                 schedule_date=timezone.now() + timedelta(days=7),
             )

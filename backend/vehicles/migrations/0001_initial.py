@@ -18,7 +18,6 @@ class Migration(migrations.Migration):
                 ('make', models.CharField(max_length=100)),
                 ('model', models.CharField(max_length=100)),
                 ('year', models.IntegerField()),
-                ('vin', models.CharField(max_length=17, unique=True)),
                 ('mileage', models.IntegerField(default=0)),
                 ('last_service_date', models.DateField(default=datetime.date.today)),
             ],

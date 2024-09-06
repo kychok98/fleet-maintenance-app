@@ -15,7 +15,6 @@ class Vehicle(models.Model):
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.IntegerField()
-    vin = models.CharField(max_length=17, unique=True)
 
     mileage = models.IntegerField(default=0)
     last_service_date = models.DateField(default=date.today)
@@ -32,16 +31,4 @@ class Vehicle(models.Model):
         return VehicleStatus.INACTIVE.value
 
     def __str__(self):
-        return f"{self.year} {self.vin} {self.make} {self.model} {self.mileage} - {self.last_service_date} {self.status}"
-
-    def save(self, *args, **kwargs):
-        if not self.vin:  # If the VIN is not set, generate a new one
-            last_vehicle = Vehicle.objects.all().order_by('id').last()
-            if last_vehicle:
-                last_vin_num = int(last_vehicle.vin[3:])  # Extract the numeric part of the VIN
-                new_vin_num = last_vin_num + 1
-            else:
-                new_vin_num = 1
-            self.vin = f'VIN{new_vin_num:03d}'  # Format the VIN as VIN001, VIN002, etc.
-
-        super().save(*args, **kwargs)
+        return f"{self.id} {self.year} {self.make} {self.model} {self.mileage} - {self.last_service_date} {self.status}"

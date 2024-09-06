@@ -9,7 +9,7 @@ from .models import Maintenance
 class MaintenanceModelTest(TestCase):
 
     def setUp(self):
-        self.vehicle = Vehicle.objects.create(make='Toyota', model='Camry', year=2020, vin='VIN123', mileage=12000)
+        self.vehicle = Vehicle.objects.create(make='Toyota', model='Camry', year=2020, id='123', mileage=12000)
         self.maintenance_manual = Maintenance.objects.create(
             vehicle=self.vehicle,
             description='Oil Change',

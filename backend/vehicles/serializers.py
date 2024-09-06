@@ -10,8 +10,8 @@ class VehicleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vehicle
-        fields = ['id', 'make', 'model', 'year', 'vin', 'mileage', 'last_service_date', 'status', 'maintenances']
-        read_only_fields = ['id', 'vin', 'last_service_date', 'status']
+        fields = ['id', 'make', 'model', 'year', 'mileage', 'last_service_date', 'status', 'maintenances']
+        read_only_fields = ['id', 'last_service_date', 'status']
 
     # noinspection PyMethodMayBeStatic
     def get_maintenances(self, instance):
