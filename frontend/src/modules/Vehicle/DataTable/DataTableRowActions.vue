@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/lib/ui/dropdown-menu";
+import DialogView from "@/modules/Vehicle/Dialog/DialogView.vue";
 import { DotsHorizontalIcon } from "@radix-icons/vue";
 import type { Row } from "@tanstack/vue-table";
 import { ref } from "vue";
@@ -19,6 +20,7 @@ interface DataTableRowActionsProps {
 }
 defineProps<DataTableRowActionsProps>();
 
+const openView = ref(false);
 const openDelete = ref(false);
 const openEdit = ref(false);
 </script>
@@ -35,11 +37,18 @@ const openEdit = ref(false);
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="w-[160px]">
+      <DropdownMenuItem @click="openView = true">View Details</DropdownMenuItem>
       <DropdownMenuItem @click="openEdit = true">Edit</DropdownMenuItem>
       <DropdownMenuItem @click="openDelete = true">Delete</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 
+  <DialogView
+    v-if="openView"
+    :row="row"
+    open
+    @update:open="(val: boolean) => (openView = val)"
+  />
   <DialogEdit
     v-if="openEdit"
     :row="row"
