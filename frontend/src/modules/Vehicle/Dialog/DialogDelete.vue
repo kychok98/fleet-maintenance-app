@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/lib/ui/dialog";
 import { useToast } from "@/lib/ui/toast";
+import { getLabel } from "@/modules/Vehicle/utils.ts";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { Row } from "@tanstack/vue-table";
 import {
@@ -35,8 +36,7 @@ const delegatedProps = computed(() => {
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
 const label = computed(() => {
-  const { vin, make, model } = props.row.original;
-  return `${vin} ${make} ${model}`;
+  return getLabel(props.row.original);
 });
 
 const { toast } = useToast();
@@ -44,7 +44,6 @@ const queryClient = useQueryClient();
 
 const { isPending, mutate } = useMutation({
   mutationFn: async (id: number) => {
-    console.log("id: ", id);
     await deleteVehicle(id);
     await queryClient.invalidateQueries({ queryKey: ["vehicles"] });
     emits("update:open", false);

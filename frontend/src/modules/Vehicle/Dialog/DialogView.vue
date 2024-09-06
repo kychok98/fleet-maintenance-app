@@ -41,8 +41,8 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
           <div
             class="grid grid-cols-[140px_1fr] items-center gap-x-2 gap-y-1 [&>*:nth-child(even)]:text-slate-600"
           >
-            <span class="text-right"> VIN: </span>
-            <span class="text-left">{{ row.original.vin }}</span>
+            <span class="text-right"> Year: </span>
+            <span class="text-left">{{ row.original.year }}</span>
             <span class="text-right"> Make: </span>
             <span class="text-left">{{ row.original.make }}</span>
             <span class="text-right"> Model: </span>

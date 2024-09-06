@@ -9,6 +9,7 @@ import {
 } from "@/lib/ui/dialog";
 import DialogDescription from "@/lib/ui/dialog/DialogDescription.vue";
 import { useToast } from "@/lib/ui/toast";
+import { getLabel } from "@/modules/Vehicle/utils.ts";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { Row } from "@tanstack/vue-table";
 import {
@@ -53,7 +54,7 @@ const { isPending, mutate } = useMutation({
       await queryClient.invalidateQueries({ queryKey: ["vehicles"] });
       toast({
         title: "Vehicle Updated Success!",
-        description: `${data.vin} have been updated.`,
+        description: `${getLabel(data)} have been updated.`,
         variant: "success",
       });
     }
@@ -69,7 +70,7 @@ const { isPending, mutate } = useMutation({
           Click save changes when you're done.
         </DialogDescription>
         <div class="mt-4">
-          <EditableField id="vin" v-model="state.vin" label="VIN" readonly />
+          <EditableField id="year" v-model="state.year" label="Year" readonly />
           <EditableField id="make" v-model="state.make" label="Make" />
           <EditableField id="model" v-model="state.model" label="Model" />
           <EditableField id="year" v-model="state.year" label="Year" />

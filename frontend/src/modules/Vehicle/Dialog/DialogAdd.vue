@@ -13,6 +13,7 @@ import {
   VehicleAddParam,
   vehicleAddSchema,
 } from "@/modules/Vehicle/services/schema.ts";
+import { getLabel } from "@/modules/Vehicle/utils.ts";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import {
   DialogRootEmits,
@@ -48,7 +49,7 @@ const { isPending, mutate } = useMutation({
       await queryClient.invalidateQueries({ queryKey: ["vehicles"] });
       toast({
         title: "Vehicle Added Success!",
-        description: `${data.vin} have been added.`,
+        description: `${getLabel(data)} have been added.`,
         variant: "success",
       });
     }

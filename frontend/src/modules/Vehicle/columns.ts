@@ -1,17 +1,18 @@
 import DataTableColumnHeader from "@/components/DataTable/DataTableColumnHeader.vue";
 import { formatNumberWithCommas } from "@/lib/utils.ts";
+import { getLabel } from "@/modules/Vehicle/utils.ts";
 import type { ColumnDef } from "@tanstack/vue-table";
 import { twMerge } from "tailwind-merge";
 import { h } from "vue";
-import type { TVehicle } from "../services/schema.ts";
+import type { TVehicle } from "./services/schema.ts";
 import BadgeStatus from "./components/BadgeStatus.vue";
 import DataTableRowActions from "./components/DataTableRowActions.vue";
 
 export const columns: ColumnDef<TVehicle>[] = [
   {
-    accessorKey: "vin",
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: "VIN" }),
-    cell: ({ row }) => h("div", { class: "w-12" }, row.getValue("vin")),
+    accessorKey: "id",
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: "ID" }),
+    cell: ({ row }) => h("div", { class: "w-12" }, row.getValue("id")),
     enableHiding: false,
   },
   {
@@ -19,8 +20,7 @@ export const columns: ColumnDef<TVehicle>[] = [
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: "Car Model" }),
     cell: ({ row }) => {
-      const label = `${row.original.make} ${row.original.model}`;
-      return h("div", { class: "truncate min-w-40" }, label);
+      return h("div", { class: "truncate min-w-40" }, getLabel(row.original));
     },
   },
   {
