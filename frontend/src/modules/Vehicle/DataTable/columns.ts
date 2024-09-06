@@ -1,9 +1,8 @@
-import { Badge } from "@/lib/ui/badge";
 import { formatNumberWithCommas } from "@/lib/utils.ts";
 import type { ColumnDef } from "@tanstack/vue-table";
 import { twMerge } from "tailwind-merge";
 import { h } from "vue";
-import { statusVariants } from "../constants.ts";
+import BadgeStatus from "../components/BadgeStatus.vue";
 import type { TVehicle } from "../services/schema.ts";
 import DataTableColumnHeader from "./DataTableColumnHeader.vue";
 import DataTableRowActions from "./DataTableRowActions.vue";
@@ -57,9 +56,9 @@ export const columns: ColumnDef<TVehicle>[] = [
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: "Status" }),
     cell: ({ row }) => {
-      const key = row.getValue("status") as TVehicle["status"];
+      const status = row.getValue("status") as TVehicle["status"];
       return h("div", { class: twMerge("text-center w-12") }, [
-        h(Badge, { variant: statusVariants[key] }, () => key.toUpperCase()),
+        h(BadgeStatus, { status: status }),
       ]);
     },
     filterFn: (row, id, value) => {

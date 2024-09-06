@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Badge from "@/lib/ui/badge/Badge.vue";
 import { Button } from "@/lib/ui/button";
 import {
   Dialog,
@@ -18,8 +17,8 @@ import {
   useForwardPropsEmits,
 } from "radix-vue";
 import { computed, ref, toRaw } from "vue";
+import BadgeStatus from "../components/BadgeStatus.vue";
 import EditableField from "../components/EditableField.vue";
-import { statusVariants } from "../constants.ts";
 import { type TVehicle, vehicleUpdateSchema } from "../services/schema.ts";
 import { updateVehicle } from "../services/VehicleService.ts";
 
@@ -82,9 +81,7 @@ const { isPending, mutate } = useMutation({
             </label>
             <div class="flex items-center space-x-2 px-3">
               <span> {{ state.last_service_date }} </span>
-              <Badge :variant="statusVariants[state.status]">
-                {{ state.status.toUpperCase() }}
-              </Badge>
+              <BadgeStatus :status="state.status" />
             </div>
           </fieldset>
         </div>

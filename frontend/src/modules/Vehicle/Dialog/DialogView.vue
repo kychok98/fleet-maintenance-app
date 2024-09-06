@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Badge from "@/lib/ui/badge/Badge.vue";
 import {
   Dialog,
   DialogContent,
@@ -14,8 +13,8 @@ import {
   useForwardPropsEmits,
 } from "radix-vue";
 import { computed } from "vue";
+import BadgeStatus from "../components/BadgeStatus.vue";
 import DialogViewRecords from "../components/DialogViewRecords.vue";
-import { statusVariants } from "../constants.ts";
 import { type TVehicle } from "../services/schema.ts";
 
 interface IProps extends DialogRootProps {
@@ -53,9 +52,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
             <span class="text-right"> Last service date: </span>
             <span class="flex items-center space-x-2 text-left">
               <span>{{ row.original.last_service_date }}</span>
-              <Badge :variant="statusVariants[row.original.status]">
-                {{ row.original.status.toUpperCase() }}
-              </Badge>
+              <BadgeStatus :status="row.original.status" />
             </span>
           </div>
 

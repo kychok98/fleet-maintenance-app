@@ -17,6 +17,7 @@ import {
   useForwardPropsEmits,
 } from "radix-vue";
 import { computed } from "vue";
+import BadgeStatus from "../components/BadgeStatus.vue";
 import { TVehicle } from "../services/schema.ts";
 import { deleteVehicle } from "../services/VehicleService.ts";
 
@@ -64,14 +65,17 @@ const { isPending, mutate } = useMutation({
   <Dialog v-bind="forwarded">
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>Are you sure you want to remove?</DialogTitle>
+        <DialogTitle class="text-xl text-red-800">
+          Are you sure you want to remove?
+        </DialogTitle>
         <DialogDescription class="flex flex-col space-y-2 text-sm">
-          <b class="text-xl">{{ label }}</b>
-          <span>
-            This action cannot be undone, and will permanently delete all
-            related maintenance record(s).
-          </span>
+          This action cannot be undone, and will permanently delete all related
+          maintenance record(s).
         </DialogDescription>
+        <div class="flex items-center space-x-2">
+          <b class="text-xl font-semibold">{{ label }}</b>
+          <BadgeStatus class="flex" :status="row.original.status" />
+        </div>
       </DialogHeader>
       <DialogFooter>
         <Button
