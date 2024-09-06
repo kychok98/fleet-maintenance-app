@@ -32,7 +32,7 @@ class Vehicle(models.Model):
         return VehicleStatus.INACTIVE.value
 
     def __str__(self):
-        return f"{self.year} {self.make} {self.model} ({self.vin}) - {self.status}"
+        return f"{self.year} {self.vin} {self.make} {self.model} {self.mileage} - {self.last_service_date} {self.status}"
 
     def save(self, *args, **kwargs):
         if not self.vin:  # If the VIN is not set, generate a new one

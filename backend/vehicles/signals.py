@@ -9,12 +9,15 @@ from vehicles.models import Vehicle, VehicleStatus
 
 @receiver(post_save, sender=Vehicle)
 def schedule_predictive_maintenance(sender, instance, **kwargs):
-    print("schedule_predictive_maintenance: ", instance.mileage, instance.status)
+    print("schedule_predictive_maintenance: ", instance)
     if not instance.mileage:
         return
 
     if instance.status == VehicleStatus.INACTIVE.value:
-        if not instance.maintenances.filter(schedule_date__gte=instance.last_service_date).exists():
+        has_pending = instance.maintenances.filter(
+                schedule_date__gte=instance.last_service_date,
+                completion_date__isnull=True).exists()
+        if not has_pending:
             instance.maintenances.create(
                 vehicle=instance,
                 description="Predictive maintenance required",
