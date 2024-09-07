@@ -1,7 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import MaintenanceLanding from "@/modules/Maintenance/MaintenanceLanding.vue";
+</script>
 
 <template>
-  <div class="container my-4 rounded border shadow">
-    <div>maintenance</div>
-  </div>
+  <MaintenanceLanding />
 </template>
