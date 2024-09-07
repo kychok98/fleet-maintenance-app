@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { TVehicle } from "@/modules/Vehicle/services/schema.ts";
-
 import { Button } from "@/lib/ui/button";
 import {
   DropdownMenu,
@@ -15,7 +13,7 @@ import type { Table } from "@tanstack/vue-table";
 import { computed } from "vue";
 
 interface DataTableViewOptionsProps {
-  table: Table<TVehicle>;
+  table: Table<any>;
 }
 
 const props = defineProps<DataTableViewOptionsProps>();

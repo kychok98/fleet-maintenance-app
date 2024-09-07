@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FormInputField from "@/components/Form/FormInputField.vue";
 import { Button } from "@/lib/ui/button";
 import {
   Dialog,
@@ -19,7 +20,6 @@ import {
 } from "radix-vue";
 import { computed, ref, toRaw } from "vue";
 import BadgeStatus from "../components/BadgeStatus.vue";
-import EditableField from "../components/EditableField.vue";
 import { type TVehicle, vehicleUpdateSchema } from "../services/schema.ts";
 import { updateVehicle } from "../services/VehicleService.ts";
 
@@ -70,11 +70,20 @@ const { isPending, mutate } = useMutation({
           Click save changes when you're done.
         </DialogDescription>
         <div class="mt-4">
-          <EditableField id="year" v-model="state.year" label="Year" readonly />
-          <EditableField id="make" v-model="state.make" label="Make" />
-          <EditableField id="model" v-model="state.model" label="Model" />
-          <EditableField id="year" v-model="state.year" label="Year" />
-          <EditableField id="mileage" v-model="state.mileage" label="Mileage" />
+          <FormInputField
+            id="year"
+            v-model="state.year"
+            label="Year"
+            readonly
+          />
+          <FormInputField id="make" v-model="state.make" label="Make" />
+          <FormInputField id="model" v-model="state.model" label="Model" />
+          <FormInputField id="year" v-model="state.year" label="Year" />
+          <FormInputField
+            id="mileage"
+            v-model="state.mileage"
+            label="Mileage"
+          />
 
           <fieldset class="mb-[15px] flex items-center gap-2">
             <label class="w-[130px] text-right text-[15px]">

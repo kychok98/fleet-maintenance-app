@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { TVehicle } from "@/modules/Vehicle/services/schema.ts";
 import { Button } from "@/lib/ui/button";
 import {
   DropdownMenu,
@@ -19,17 +18,11 @@ import {
 import type { Column } from "@tanstack/vue-table";
 
 interface DataTableColumnHeaderProps {
-  column: Column<TVehicle, any>;
+  column: Column<any, any>;
   title: string;
 }
 
 defineProps<DataTableColumnHeaderProps>();
-</script>
-
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-};
 </script>
 
 <template>

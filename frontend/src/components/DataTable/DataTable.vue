@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { TVehicle } from "@/modules/Vehicle/services/schema.ts";
 import {
   Table,
   TableBody,
@@ -24,8 +23,8 @@ import {
 import { ref } from "vue";
 
 interface DataTableProps {
-  columns: ColumnDef<TVehicle, any>[];
-  data: TVehicle[];
+  columns: ColumnDef<any, any>[];
+  data: any[];
 }
 const props = defineProps<DataTableProps>();
 

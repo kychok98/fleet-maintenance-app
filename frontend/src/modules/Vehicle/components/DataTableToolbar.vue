@@ -24,7 +24,7 @@ const handleReset = () => {
 
 <template>
   <div class="mt-2 flex items-center justify-between">
-    <Button variant="" size="sm" class="h-8" @click="openAdd = true">
+    <Button size="sm" class="h-8" @click="openAdd = true">
       <PlusIcon class="mr-1 h-4 w-4" />
       Add
     </Button>

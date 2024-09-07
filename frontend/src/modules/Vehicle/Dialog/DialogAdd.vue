@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FormInputField from "@/components/Form/FormInputField.vue";
 import { Button } from "@/lib/ui/button";
 import {
   Dialog,
@@ -22,7 +23,6 @@ import {
 } from "radix-vue";
 import { ref } from "vue";
 import { ZodError } from "zod";
-import EditableField from "../components/EditableField.vue";
 import { addVehicle } from "../services/VehicleService.ts";
 
 const props = defineProps<DialogRootProps>();
@@ -78,19 +78,19 @@ const handleSave = () => {
           Click save when you're done.
         </DialogDescription>
         <div class="mt-4">
-          <EditableField
+          <FormInputField
             id="make"
             v-model="state.make"
             label="Make"
             placeholder="Toyota"
           />
-          <EditableField
+          <FormInputField
             id="model"
             v-model="state.model"
             label="Model"
             placeholder="Civic"
           />
-          <EditableField id="year" v-model="state.year" label="Year" />
+          <FormInputField id="year" v-model="state.year" label="Year" />
         </div>
       </DialogHeader>
       <DialogFooter>
