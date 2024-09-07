@@ -7,7 +7,6 @@ import type { TMaintenance } from "./services/schema.ts";
 
 export const columns: ColumnDef<TMaintenance>[] = [
   {
-    id: "Schedule date",
     accessorKey: "schedule_date",
     header: ({ column }) =>
       h(DataTableColumnHeader, {
@@ -25,9 +24,9 @@ export const columns: ColumnDef<TMaintenance>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    enableHiding: false,
   },
   {
-    id: "Completion date",
     accessorKey: "completion_date",
     header: ({ column }) =>
       h(DataTableColumnHeader, {
@@ -45,6 +44,7 @@ export const columns: ColumnDef<TMaintenance>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    enableHiding: false,
   },
   {
     accessorKey: "vehicle_id",

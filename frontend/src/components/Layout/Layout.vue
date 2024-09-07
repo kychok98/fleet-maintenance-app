@@ -5,7 +5,7 @@ import LayoutNav from "./LayoutNav.vue";
 <template>
   <div class="container my-4 rounded border py-4 shadow">
     <div
-      class="flex items-baseline justify-between md:justify-normal md:space-x-12"
+      class="mb-2 flex items-baseline justify-between border-b-2 md:justify-normal md:space-x-12"
     >
       <LayoutHeader />
       <LayoutNav />

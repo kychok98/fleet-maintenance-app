@@ -105,4 +105,8 @@ const table = useVueTable({
       </Table>
     </div>
   </div>
+
+  <div class="mt-4 text-sm md:text-base">
+    Total {{ table.getRowCount() }} records(s)
+  </div>
 </template>
