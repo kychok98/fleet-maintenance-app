@@ -38,17 +38,23 @@ def create_dummy_vehicles_and_maintenance(apps, schema_editor):
             model=model,
             year=year,
             mileage=mileage,
-            last_service_date=timezone.now() if mileage < 5000  else last_service_date
+            last_service_date=timezone.now() if mileage < 5000 else last_service_date
         )
         vehicles.append(vehicle)
 
+    Vehicle.objects.bulk_create(vehicles)
+
+    saved_vehicles = Vehicle.objects.all()
+    for vehicle in saved_vehicles:
         # Randomly determine if this vehicle should have maintenance records
         if random.choice([True, False]):
-            # Generate maintenance records based on mileage
+            mileage = vehicle.mileage
+            last_service_date = vehicle.last_service_date
+
             maintenance_mileage = 5000
             while maintenance_mileage <= mileage:
                 maintenance_mileage += 5000
-                maintenance=Maintenance(
+                maintenance = Maintenance(
                     vehicle=vehicle,
                     schedule_type='auto' if random.choice([True, False]) else 'manual',
                     schedule_date=last_service_date,
@@ -57,7 +63,6 @@ def create_dummy_vehicles_and_maintenance(apps, schema_editor):
                 )
                 maintenances.append(maintenance)
 
-    Vehicle.objects.bulk_create(vehicles)
     Maintenance.objects.bulk_create(maintenances)
 
 class Migration(migrations.Migration):
