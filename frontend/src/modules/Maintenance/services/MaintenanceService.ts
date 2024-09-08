@@ -1,4 +1,5 @@
 import axios from "@/lib/axios";
+import { formatDate } from "@vueuse/core";
 import type {
   TMaintenance,
   MaintenanceAddParam,
@@ -27,6 +28,13 @@ export const updateMaintenance = async (
 };
 
 export const addMaintenance = async (data: MaintenanceAddParam) => {
-  const res = await axios.post<TMaintenance>(`${BASE_URL}/add/`, data);
+  const param = {
+    description: data.description,
+    schedule_date: formatDate(new Date(data.schedule_date), "YYYY-MM-DD"),
+  };
+  const res = await axios.post<TMaintenance>(
+    `${BASE_URL}/add/${data.vehicle_id}/`,
+    param,
+  );
   return res.data;
 };

@@ -7,6 +7,12 @@ import type { TMaintenance } from "./services/schema.ts";
 
 export const columns: ColumnDef<TMaintenance>[] = [
   {
+    accessorKey: "id",
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: "ID" }),
+    cell: ({ row }) => h("div", { class: "w-12" }, row.getValue("id")),
+    enableHiding: false,
+  },
+  {
     accessorKey: "schedule_date",
     header: ({ column }) =>
       h(DataTableColumnHeader, {
@@ -47,11 +53,11 @@ export const columns: ColumnDef<TMaintenance>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "vehicle_id",
+    accessorKey: "vehicle",
     header: ({ column }) =>
       h(DataTableColumnHeader, { column, title: "Vehicle ID" }),
     cell: ({ row }) => {
-      return h("div", { class: "text-right w-16" }, row.original.vehicle_id);
+      return h("div", { class: "text-right w-16" }, row.original.vehicle);
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -69,7 +75,9 @@ export const columns: ColumnDef<TMaintenance>[] = [
     accessorKey: "schedule_type",
     header: ({ column }) => h(DataTableColumnHeader, { column, title: "Type" }),
     cell: ({ row }) => {
-      const type = row.getValue("schedule_type") as TMaintenance['schedule_type']
+      const type = row.getValue(
+        "schedule_type",
+      ) as TMaintenance["schedule_type"];
       return h("div", { class: "text-center w-[80px]" }, [
         h(BadgeType, { type }),
       ]);

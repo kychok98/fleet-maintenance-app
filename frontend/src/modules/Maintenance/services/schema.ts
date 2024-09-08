@@ -7,7 +7,7 @@ export const maintenanceSchema = z.object({
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .nullable(), // Validating date format YYYY-MM-DD
-  vehicle_id: z.string(),
+  vehicle: z.string(),
   description: z.string(),
   schedule_type: z.enum(["auto", "manual"]),
 });
@@ -26,9 +26,9 @@ export const maintenanceUpdateSchema = z.object({
 export type MaintenanceUpdateParam = z.infer<typeof maintenanceUpdateSchema>;
 
 export const maintenanceAddSchema = z.object({
-  make: z.string().min(3, "Make is required"),
-  model: z.string().min(3, "Model is required"),
-  year: z.number().int().min(1886),
+  vehicle_id: z.number().min(0, "Vehicle ID is required").optional(),
+  schedule_date: z.date().optional(),
+  description: z.string(),
 });
 
 export type MaintenanceAddParam = z.infer<typeof maintenanceAddSchema>;

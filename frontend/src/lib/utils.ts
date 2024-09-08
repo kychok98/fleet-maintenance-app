@@ -20,3 +20,17 @@ export function valueUpdater<T extends Updater<any>>(
 export function formatNumberWithCommas(num: number): string {
   return num.toLocaleString("en-US");
 }
+
+export function buildParams(data: Record<any, any>) {
+  const params = new URLSearchParams();
+
+  Object.entries(data).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((value) => params.append(key, value.toString()));
+    } else {
+      params.append(key, (value || false).toString());
+    }
+  });
+
+  return params.toString();
+}

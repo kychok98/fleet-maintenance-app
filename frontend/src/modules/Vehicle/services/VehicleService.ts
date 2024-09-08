@@ -1,12 +1,20 @@
 import axios from "@/lib/axios";
+import { buildParams } from "@/lib/utils.ts";
 import type {
   TVehicle,
   VehicleAddParam,
   VehicleUpdateParam,
 } from "./schema.ts";
 
-export const getVehicles = async () => {
-  const res = await axios<TVehicle[]>("/vehicles/");
+export const getVehicles = async (
+  param: { status?: string; sort_by?: string } = {},
+) => {
+  const res = await axios<TVehicle[]>("/vehicles/?" + buildParams(param));
+  return res.data;
+};
+
+export const getVehicleById = async (id: string) => {
+  const res = await axios<TVehicle>(`/vehicles/${id}/`);
   return res.data;
 };
 

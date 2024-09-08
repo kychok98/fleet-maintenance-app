@@ -8,7 +8,7 @@ import { getVehicles } from "./services/VehicleService.ts";
 
 const { isLoading, data } = useQuery({
   queryKey: ["vehicles"],
-  queryFn: getVehicles,
+  queryFn: () => getVehicles(),
 });
 </script>
 

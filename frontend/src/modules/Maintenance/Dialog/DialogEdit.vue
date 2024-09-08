@@ -18,7 +18,10 @@ import {
   useForwardPropsEmits,
 } from "radix-vue";
 import { computed, ref, toRaw } from "vue";
-import { type TMaintenance, maintenanceUpdateSchema } from "../services/schema.ts";
+import {
+  type TMaintenance,
+  maintenanceUpdateSchema,
+} from "../services/schema.ts";
 import { updateMaintenance } from "../services/MaintenanceService.ts";
 
 interface IProps extends DialogRootProps {
@@ -68,11 +71,20 @@ const { isPending, mutate } = useMutation({
           Click save changes when you're done.
         </DialogDescription>
         <div class="mt-4">
-          <FormInputField id="year" v-model="state.year" label="Year" readonly />
+          <FormInputField
+            id="year"
+            v-model="state.year"
+            label="Year"
+            readonly
+          />
           <FormInputField id="make" v-model="state.make" label="Make" />
           <FormInputField id="model" v-model="state.model" label="Model" />
           <FormInputField id="year" v-model="state.year" label="Year" />
-          <FormInputField id="mileage" v-model="state.mileage" label="Mileage" />
+          <FormInputField
+            id="mileage"
+            v-model="state.mileage"
+            label="Mileage"
+          />
 
           <fieldset class="mb-[15px] flex items-center gap-2">
             <label class="w-[130px] text-right text-[15px]">

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import FormDateField from "@/components/Form/FormDateField.vue";
 import FormInputField from "@/components/Form/FormInputField.vue";
+import FormSelectField from "@/components/Form/FormSelectField.vue";
 import { Button } from "@/lib/ui/button";
 import {
   Dialog,
@@ -10,33 +12,45 @@ import {
   DialogTitle,
 } from "@/lib/ui/dialog";
 import { useToast } from "@/lib/ui/toast";
-import {
-  VehicleAddParam,
-  vehicleAddSchema,
-} from "@/modules/Vehicle/services/schema.ts";
-import { getLabel } from "@/modules/Vehicle/utils.ts";
-import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import { getVehicles } from "@/modules/Vehicle/services/VehicleService.ts";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import {
   DialogRootEmits,
   DialogRootProps,
   useForwardPropsEmits,
 } from "radix-vue";
 import { ref } from "vue";
-import { ZodError } from "zod";
 import { addMaintenance } from "../services/MaintenanceService.ts";
 
 const props = defineProps<DialogRootProps>();
 const emits = defineEmits<DialogRootEmits>();
 const forwarded = useForwardPropsEmits(props, emits);
 
-const state = ref<VehicleAddParam>({
-  make: "",
-  model: "",
-  year: 2024,
-});
-
 const { toast } = useToast();
 const queryClient = useQueryClient();
+
+const state = ref({
+  vehicle_id: undefined,
+  schedule_date: undefined,
+  description: "",
+});
+
+const { data: inactiveVehicles } = useQuery({
+  queryKey: ["vehicles-inactive"],
+  queryFn: async () => {
+    const vehicles = await getVehicles({ status: "inactive", sort_by: "id" });
+
+    return vehicles.reduce((acc, vehicle) => {
+      return [
+        ...acc,
+        {
+          label: `${vehicle.id} - ${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+          value: vehicle.id + "",
+        },
+      ];
+    }, [] as ISelectItem[]);
+  },
+});
 
 const { isPending, mutate } = useMutation({
   mutationFn: async () => {
@@ -46,56 +60,56 @@ const { isPending, mutate } = useMutation({
   },
   onSettled: async (data) => {
     if (data) {
+      await queryClient.invalidateQueries({ queryKey: ["maintenances"] });
       await queryClient.invalidateQueries({ queryKey: ["vehicles"] });
       toast({
-        title: "Vehicle Added Success!",
-        description: `${getLabel(data)} have been added.`,
+        title: "Maintenance Added Success!",
+        description: `${data.id} have been added.`,
         variant: "success",
       });
     }
   },
-});
-const handleSave = () => {
-  try {
-    vehicleAddSchema.parse(state.value);
-    mutate();
-  } catch (error) {
-    const zodError = error as ZodError;
+  onError: (err) => {
     toast({
-      title: "Validation Error",
-      description: zodError.errors.map((err) => err.message).join(", "),
+      title: "Maintenance Add Error",
+      description: err.message,
       variant: "destructive",
     });
-  }
-};
+  },
+});
 </script>
 <template>
   <Dialog v-bind="forwarded">
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>Add Vehicle</DialogTitle>
+        <DialogTitle>Add Maintenance</DialogTitle>
         <DialogDescription class="text-sm">
-          Click save when you're done.
+          Click add when you're done.
         </DialogDescription>
         <div class="mt-4">
+          <FormSelectField
+            id="vehicle_id"
+            v-model="state.vehicle_id"
+            placeholder="Select a vehicle"
+            label="Vehicle"
+            :items="inactiveVehicles || []"
+          />
+          <FormDateField
+            id="schedule_date"
+            v-model="state.schedule_date"
+            label="Date"
+          />
           <FormInputField
             id="make"
-            v-model="state.make"
-            label="Make"
-            placeholder="Toyota"
+            v-model="state.description"
+            label="Description"
+            placeholder="Normal maintenance"
           />
-          <FormInputField
-            id="model"
-            v-model="state.model"
-            label="Model"
-            placeholder="Civic"
-          />
-          <FormInputField id="year" v-model="state.year" label="Year" />
         </div>
       </DialogHeader>
       <DialogFooter>
-        <Button type="submit" :loading="isPending" @click="handleSave">
-          Save
+        <Button type="submit" :loading="isPending" @click="mutate">
+          Add
         </Button>
       </DialogFooter>
     </DialogContent>
