@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FormDateField from "@/components/Form/FormDateField.vue";
 import FormInputField from "@/components/Form/FormInputField.vue";
 import { Button } from "@/lib/ui/button";
 import {
@@ -10,24 +11,23 @@ import {
 } from "@/lib/ui/dialog";
 import DialogDescription from "@/lib/ui/dialog/DialogDescription.vue";
 import { useToast } from "@/lib/ui/toast";
+import { formatDate } from "@/lib/utils.ts";
+import BadgeType from "@/modules/Maintenance/components/BadgeType.vue";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { Row } from "@tanstack/vue-table";
+
 import {
   DialogRootEmits,
   DialogRootProps,
   useForwardPropsEmits,
 } from "radix-vue";
-import { computed, ref, toRaw } from "vue";
-import {
-  type TMaintenance,
-  maintenanceUpdateSchema,
-} from "../services/schema.ts";
+import { computed, ref } from "vue";
 import { updateMaintenance } from "../services/MaintenanceService.ts";
+import { type TMaintenance } from "../services/schema.ts";
 
 interface IProps extends DialogRootProps {
   row: Row<TMaintenance>;
 }
-
 const props = defineProps<IProps>();
 const emits = defineEmits<DialogRootEmits>();
 const delegatedProps = computed(() => {
@@ -36,23 +36,37 @@ const delegatedProps = computed(() => {
 });
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
-const state = ref(structuredClone(toRaw(props.row.original)));
+const readOnly = computed(() => {
+  const { completion_date } = props.row.original;
+  return Boolean(completion_date);
+});
+
+const state = ref({
+  schedule_date: undefined,
+  completion_date: undefined,
+  description: props.row.original.description,
+});
 
 const { toast } = useToast();
 const queryClient = useQueryClient();
 
 const { isPending, mutate } = useMutation({
   mutationFn: async (id: number) => {
-    const maintenance = await updateMaintenance(
-      id,
-      maintenanceUpdateSchema.parse(state.value),
-    );
+    const maintenance = await updateMaintenance(id, {
+      completion_date: state.value.completion_date
+        ? formatDate(state.value.completion_date)
+        : undefined,
+      schedule_date: state.value.schedule_date
+        ? formatDate(state.value.schedule_date)
+        : undefined,
+      description: state.value.description,
+    });
+    await queryClient.invalidateQueries({ queryKey: ["maintenances"] });
     emits("update:open", false);
     return maintenance;
   },
   onSettled: async (data) => {
     if (data) {
-      await queryClient.invalidateQueries({ queryKey: ["maintenances"] });
       toast({
         title: "Maintenance Updated Success!",
         description: `${data} have been updated.`,
@@ -71,27 +85,31 @@ const { isPending, mutate } = useMutation({
           Click save changes when you're done.
         </DialogDescription>
         <div class="mt-4">
-          <FormInputField
-            id="year"
-            v-model="state.year"
-            label="Year"
-            readonly
+          <FormDateField
+            id="schedule_date"
+            v-model="state.schedule_date"
+            label="Schedule Date"
+            :placeholder="row.original.schedule_date || ''"
+            :disabled="readOnly"
           />
-          <FormInputField id="make" v-model="state.make" label="Make" />
-          <FormInputField id="model" v-model="state.model" label="Model" />
-          <FormInputField id="year" v-model="state.year" label="Year" />
-          <FormInputField
-            id="mileage"
-            v-model="state.mileage"
-            label="Mileage"
+          <FormDateField
+            id="completion_date"
+            v-model="state.completion_date"
+            label="Completion Date"
+            :placeholder="row.original.completion_date || ''"
+            :disabled="readOnly"
           />
-
+          <FormInputField
+            id="description"
+            v-model="state.description"
+            label="Description"
+          />
           <fieldset class="mb-[15px] flex items-center gap-2">
             <label class="w-[130px] text-right text-[15px]">
-              Last Service Date:
+              Schedule Type
             </label>
             <div class="flex items-center space-x-2 px-3">
-              <span> {{ state.last_service_date }} </span>
+              <BadgeType :type="row.original.schedule_type" />
             </div>
           </fieldset>
         </div>

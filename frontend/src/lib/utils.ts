@@ -1,4 +1,6 @@
+import { DateValue, getLocalTimeZone } from "@internationalized/date";
 import type { Updater } from "@tanstack/vue-table";
+import { formatDate as VueUseFormatDate } from "@vueuse/core";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { Ref } from "vue";
@@ -33,4 +35,8 @@ export function buildParams(data: Record<any, any>) {
   });
 
   return params.toString();
+}
+
+export function formatDate(value: DateValue, format = "YYYY-MM-DD") {
+  return VueUseFormatDate(value.toDate(getLocalTimeZone()), format);
 }

@@ -15,11 +15,14 @@ export const maintenanceSchema = z.object({
 export type TMaintenance = z.infer<typeof maintenanceSchema>;
 
 export const maintenanceUpdateSchema = z.object({
-  schedule_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), // Validating date format YYYY-MM-DD
+  schedule_date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(), // Validating date format YYYY-MM-DD
   completion_date: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .nullable(), // Validating date format YYYY-MM-DD
+    .optional(), // Validating date format YYYY-MM-DD
   description: z.string(),
 });
 
