@@ -86,6 +86,7 @@ const table = useVueTable({
               v-for="row in table.getRowModel().rows"
               :key="row.id"
               :data-state="row.getIsSelected() && 'selected'"
+              :data-status="row.original?.rowStatus"
             >
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender

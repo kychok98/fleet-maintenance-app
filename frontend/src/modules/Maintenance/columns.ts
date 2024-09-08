@@ -1,4 +1,5 @@
 import DataTableColumnHeader from "@/components/DataTable/DataTableColumnHeader.vue";
+import { Checkbox } from "@/lib/ui/checkbox";
 import type { ColumnDef } from "@tanstack/vue-table";
 import { h } from "vue";
 import BadgeType from "./components/BadgeType.vue";
@@ -7,9 +8,24 @@ import type { TMaintenance } from "./services/schema.ts";
 
 export const columns: ColumnDef<TMaintenance>[] = [
   {
-    accessorKey: "id",
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: "ID" }),
-    cell: ({ row }) => h("div", { class: "w-12" }, row.getValue("id")),
+    id: "select",
+    header: ({ table }) =>
+      h(Checkbox, {
+        checked:
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate"),
+        "onUpdate:checked": (value) => table.toggleAllPageRowsSelected(!!value),
+        ariaLabel: "Select all",
+        class: "translate-y-0.5",
+      }),
+    cell: ({ row }) =>
+      h(Checkbox, {
+        checked: row.getIsSelected(),
+        "onUpdate:checked": (value) => row.toggleSelected(!!value),
+        ariaLabel: "Select row",
+        class: "translate-y-0.5",
+      }),
+    enableSorting: false,
     enableHiding: false,
   },
   {
@@ -36,14 +52,14 @@ export const columns: ColumnDef<TMaintenance>[] = [
     accessorKey: "completion_date",
     header: ({ column }) =>
       h(DataTableColumnHeader, {
-        class: "w-24",
+        class: "w-[120px]",
         column,
         title: "Completion date",
       }),
     cell: ({ row }) => {
       return h(
         "div",
-        { class: "text-center w-24" },
+        { class: "text-center w-[120px]" },
         row.original.completion_date || "-",
       );
     },

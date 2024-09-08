@@ -26,6 +26,13 @@ export const updateMaintenance = async (
   return res.data;
 };
 
+export const markMaintenanceAsComplete = async (maintenance_ids: number[]) => {
+  const res = await axios.post<{ message: string }>(`${BASE_URL}/complete/`, {
+    maintenance_ids,
+  });
+  return res.data;
+};
+
 export const addMaintenance = async (data: MaintenanceAddParam) => {
   const param = {
     description: data.description,
