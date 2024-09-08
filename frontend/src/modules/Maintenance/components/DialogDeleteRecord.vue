@@ -18,6 +18,7 @@ const { isLoading, data } = useQuery({
 });
 
 const vehicleLabel = computed(() => {
+  if (!data.value) return "-";
   return `${props.maintenance.vehicle} ${getLabel(data.value)}`;
 });
 </script>

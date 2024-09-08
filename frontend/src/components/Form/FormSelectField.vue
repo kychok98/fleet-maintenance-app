@@ -15,7 +15,7 @@ interface FormSelectProps {
   label: string;
   items: ISelectItem[];
   placeholder: string;
-  modelValue: string;
+  modelValue: string | undefined;
 }
 
 const props = defineProps<FormSelectProps>();

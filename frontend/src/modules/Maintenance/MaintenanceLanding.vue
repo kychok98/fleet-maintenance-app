@@ -8,7 +8,13 @@ import { getMaintenances } from "./services/MaintenanceService.ts";
 
 const { isLoading, data } = useQuery({
   queryKey: ["maintenances"],
-  queryFn: getMaintenances,
+  queryFn: async () => {
+    const maintenances = await getMaintenances();
+    return maintenances.map((maintenance) => {
+      const rowStatus = maintenance.completion_date ? "success" : "pending";
+      return { ...maintenance, rowStatus };
+    });
+  },
 });
 </script>
 

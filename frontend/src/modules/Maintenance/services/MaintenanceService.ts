@@ -20,7 +20,6 @@ export const deleteMaintenance = async (id: number) => {
 
 export const updateMaintenance = async (
   id: number,
-
   data: MaintenanceUpdateParam,
 ) => {
   const res = await axios.put<TMaintenance>(`${BASE_URL}/${id}/`, data);
@@ -30,7 +29,7 @@ export const updateMaintenance = async (
 export const addMaintenance = async (data: MaintenanceAddParam) => {
   const param = {
     description: data.description,
-    schedule_date: formatDate(new Date(data.schedule_date), "YYYY-MM-DD"),
+    schedule_date: formatDate(new Date(data.schedule_date!), "YYYY-MM-DD"),
   };
   const res = await axios.post<TMaintenance>(
     `${BASE_URL}/add/${data.vehicle_id}/`,

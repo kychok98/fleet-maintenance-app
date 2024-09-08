@@ -10,7 +10,7 @@ import { Calendar as CalendarIcon } from "lucide-vue-next";
 interface FormSelectProps {
   id: string;
   label: string;
-  modelValue: DateValue;
+  modelValue: DateValue | undefined;
 }
 
 const props = defineProps<FormSelectProps>();

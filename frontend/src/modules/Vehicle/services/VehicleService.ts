@@ -13,7 +13,7 @@ export const getVehicles = async (
   return res.data;
 };
 
-export const getVehicleById = async (id: string) => {
+export const getVehicleById = async (id: number) => {
   const res = await axios<TVehicle>(`/vehicles/${id}/`);
   return res.data;
 };
