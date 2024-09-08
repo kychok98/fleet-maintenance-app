@@ -1,6 +1,6 @@
 # Fleet Maintenance Application
 
-This application is designed to handle vehicle maintenance management for Company A. 
+This application is designed to handle fleet maintenance management for Company A. 
 The project is built within a Dockerized environment.
 - Django Rest Framework (backend)
 - Vue 3 Typescript with Vite (frontend)
@@ -47,9 +47,9 @@ This will:
 #### 3. Apply Database Migrations
 Once the containers are up, run the following command to apply migrations in the backend:
 ```bash
-docker exec cma-backend make migration-apply
+docker exec fma-backend make migration-apply
 ```
-> Note: `cma-backend` is the container-name in `docker-compose.yml` for backend
+> Note: `fma-backend` is the container-name in `docker-compose.yml` for backend
 
 #### 4. Access the Application
 Once everything is set up, you can access the application by visiting:
@@ -60,7 +60,7 @@ Once everything is set up, you can access the application by visiting:
 ### Common Commands
 Django apply migrations
 ```bash
-docker exec cma-backend make migration-apply
+docker exec fma-backend make migration-apply
 ```
 
 Start the application:

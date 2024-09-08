@@ -9,7 +9,7 @@ services:
       - SQLITE3_DB=db.sqlite3
 
   backend-dj:
-    container_name: "cma-backend"
+    container_name: "fma-backend"
     build: ./backend
     volumes:
       - ./backend:/code
@@ -19,7 +19,7 @@ services:
       - db-sqlite
 
   frontend-vite:
-    container_name: "cma-frontend"
+    container_name: "fma-frontend"
     build: ./frontend
     volumes:
       - ./frontend:/frontend
