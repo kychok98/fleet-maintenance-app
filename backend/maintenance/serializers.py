@@ -16,7 +16,15 @@ class MaintenanceSerializer(serializers.ModelSerializer):
     def validate(self, data):
         vehicle = data.get('vehicle')
         if vehicle and vehicle.status != 'Inactive':
-            raise serializers.ValidationError('Only vehicles with status "Inactive" can create maintenance records.')
+            raise serializers.ValidationError({'status':'Only vehicles with status "Inactive" can create maintenance records.'})
+
+        schedule_date = data.get('schedule_date') if data.get('schedule_date') else getattr(self.instance, 'schedule_date')
+        completion_date = data.get('completion_date')
+
+        # Check if completion_date is earlier than schedule_date
+        if completion_date and schedule_date and completion_date < schedule_date:
+            raise serializers.ValidationError(
+                {'completion_date': 'Completion date cannot be earlier than the schedule date.'})
 
         return data
 
