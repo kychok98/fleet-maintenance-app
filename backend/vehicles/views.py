@@ -21,10 +21,11 @@ def api_overview(request):
 
 @api_view(['GET'])
 def list_vehicles(request):
-    sort_by = request.query_params.get('sort_by', '-last_service_date')
+    sort_by = request.query_params.get('sort_by', '-last_service_date,-id')
+    sort_fields = [field.strip() for field in sort_by.split(',')]  # Support multiple sorting fields
     status_filter = request.query_params.get('status', None)
 
-    data = VehicleService.get_vehicles(sort_by, status_filter)
+    data = VehicleService.get_vehicles(sort_fields, status_filter)
     serializer = VehicleSerializer(data, many=True)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 

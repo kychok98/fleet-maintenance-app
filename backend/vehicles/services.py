@@ -3,8 +3,10 @@ from vehicles.models import Vehicle, VehicleStatus
 
 class VehicleService:
     @staticmethod
-    def get_vehicles(sort_by='-last_service_date', status_filter=None):
-        vehicles = Vehicle.objects.all().order_by(sort_by)
+    def get_vehicles(sort_by=None, status_filter=None):
+        if sort_by is None:
+            sort_by = ['-last_service_date']
+        vehicles = Vehicle.objects.all().order_by(*sort_by)
 
         if status_filter:
             if status_filter not in {status.value for status in VehicleStatus}:

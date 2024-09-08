@@ -24,13 +24,13 @@ def api_overview(request):
 
 @api_view(['GET'])
 def list_maintenance(request):
-    sort_by = request.query_params.get('sort_by', '-schedule_date')
+    sort_by = request.query_params.get('sort_by', 'schedule_date')
     sort_fields = [field.strip() for field in sort_by.split(',')]
 
     maintenances = Maintenance.objects.annotate(
         completion_date_order=Case(
-            When(completion_date__isnull=True, then=Value(1)),
-            default=Value(0),
+            When(completion_date__isnull=True, then=Value(0)),
+            default=Value(1),
         )
     ).order_by(*sort_fields, '-completion_date_order', '-completion_date')
 
