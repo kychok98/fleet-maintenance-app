@@ -34,3 +34,16 @@ class MaintenanceSerializer(serializers.ModelSerializer):
             completion_date=None,
         )
         return maintenance
+
+class MaintenanceCompleteSerializer(serializers.Serializer):
+    maintenance_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        allow_empty=False
+    )
+
+    def validate_maintenance_ids(self, value):
+        pending_maintenances = Maintenance.objects.filter(id__in=value)
+        if pending_maintenances.count() != len(value):
+            raise serializers.ValidationError("One or more maintenance records do not exist.")
+
+        return value

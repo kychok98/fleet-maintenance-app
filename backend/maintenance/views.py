@@ -1,20 +1,22 @@
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .decorators import maintenance_exists
 from .models import Maintenance
-from .serializers import MaintenanceSerializer
+from .serializers import MaintenanceSerializer, MaintenanceCompleteSerializer
 
 
 @api_view(['GET'])
 def api_overview(request):
     api_urls = {
-        'List all vehicles': 'GET /maintenance/',
-        'Add vehicle': 'POST /maintenance/add/<int:vehicle_id>/',
-        'Get vehicle by ID': 'GET /maintenance/<int:pk>/',
-        'Update vehicle by ID': 'PUT /maintenance/<int:pk>/',
-        'Delete vehicle by ID': 'DELETE /maintenance/<int:pk>/',
+        'List all maintenances': 'GET /maintenance/',
+        'Add maintenance by vehicle': 'POST /maintenance/add/<int:vehicle_id>/',
+        'Get maintenance by ID': 'GET /maintenance/<int:pk>/',
+        'Update maintenance by ID': 'PUT /maintenance/<int:pk>/',
+        'Delete maintenance by ID': 'DELETE /maintenance/<int:pk>/',
+        'Complete maintenance by vehicle ids': 'POST /maintenance/complete/'
     }
     return Response(data=api_urls, status=status.HTTP_200_OK)
 
@@ -58,3 +60,16 @@ def maintenance_detail(request, pk):
     elif request.method == 'DELETE':
         maintenance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+def maintenance_complete(request):
+    serializer = MaintenanceCompleteSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    maintenance_ids = serializer.validated_data['maintenance_ids']
+    Maintenance.objects.filter(id__in=maintenance_ids).update(
+        completion_date=timezone.now()
+    )
+
+    return Response({'message': 'Maintenance records marked as complete.'}, status=status.HTTP_200_OK)
