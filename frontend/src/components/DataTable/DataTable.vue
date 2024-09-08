@@ -10,12 +10,14 @@ import {
 import { valueUpdater } from "@/lib/utils.ts";
 import type {
   ColumnDef,
+  ColumnFiltersState,
   SortingState,
   VisibilityState,
 } from "@tanstack/vue-table";
 import {
   FlexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   useVueTable,
 } from "@tanstack/vue-table";
@@ -29,6 +31,7 @@ interface DataTableProps {
 const props = defineProps<DataTableProps>();
 
 const sorting = ref<SortingState>([]);
+const columnFilters = ref<ColumnFiltersState>([]);
 const columnVisibility = ref<VisibilityState>({});
 const rowSelection = ref({});
 
@@ -43,6 +46,9 @@ const table = useVueTable({
     get sorting() {
       return sorting.value;
     },
+    get columnFilters() {
+      return columnFilters.value;
+    },
     get columnVisibility() {
       return columnVisibility.value;
     },
@@ -52,11 +58,14 @@ const table = useVueTable({
   },
   enableRowSelection: true,
   onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
+  onColumnFiltersChange: (updaterOrValue) =>
+    valueUpdater(updaterOrValue, columnFilters),
   onColumnVisibilityChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, columnVisibility),
   onRowSelectionChange: (updaterOrValue) =>
     valueUpdater(updaterOrValue, rowSelection),
   getCoreRowModel: getCoreRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
   getSortedRowModel: getSortedRowModel(),
 });
 </script>

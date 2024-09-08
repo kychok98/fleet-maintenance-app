@@ -2,6 +2,8 @@
 import DataTableViewOptions from "@/components/DataTable/DataTableViewOptions.vue";
 import { Button } from "@/lib/ui/button";
 import { useToast } from "@/lib/ui/toast";
+import DataTableFacetedFilter from "@/modules/Maintenance/components/DataTableFacetedFilter.vue";
+import { statuses } from "@/modules/Maintenance/constants.ts";
 import { CheckIcon, PlusIcon, ResetIcon } from "@radix-icons/vue";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import type { Table } from "@tanstack/vue-table";
@@ -49,15 +51,24 @@ const handleReset = () => {
   table.resetSorting();
   table.resetColumnVisibility();
   table.resetRowSelection();
+  table.resetColumnFilters();
 };
 </script>
 
 <template>
   <div class="mt-2 flex items-center justify-between">
-    <Button size="sm" class="h-8" @click="openAdd = true">
-      <PlusIcon class="mr-1 h-4 w-4" />
-      Add
-    </Button>
+    <div class="space-x-2">
+      <Button size="sm" class="h-8" @click="openAdd = true">
+        <PlusIcon class="mr-1 h-4 w-4" />
+        Add
+      </Button>
+      <DataTableFacetedFilter
+        v-if="table.getColumn('completion_date')"
+        :column="table.getColumn('completion_date')"
+        title="Status"
+        :options="statuses"
+      />
+    </div>
     <div class="space-x-2">
       <Button
         :loading="isPending"

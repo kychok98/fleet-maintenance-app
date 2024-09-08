@@ -32,7 +32,15 @@ def list_maintenance(request):
             When(completion_date__isnull=True, then=Value(0)),
             default=Value(1),
         )
-    ).order_by(*sort_fields, '-completion_date_order', '-completion_date')
+    )
+
+    status_filter = request.query_params.get('status', None)
+    if status_filter == "pending":
+        maintenances = maintenances.filter(completion_date__isnull=True)
+    elif status_filter == "success":
+        maintenances = maintenances.filter(completion_date__isnull=False)
+
+    maintenances = maintenances.order_by(*sort_fields, '-completion_date_order', '-completion_date')
 
     serializer = MaintenanceSerializer(maintenances, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)

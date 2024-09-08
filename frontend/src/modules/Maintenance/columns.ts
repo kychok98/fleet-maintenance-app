@@ -64,7 +64,12 @@ export const columns: ColumnDef<TMaintenance>[] = [
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      if (value.length > 1) return true;
+
+      if (value.includes("pending")) {
+        return row.getValue(id) === null;
+      }
+      return row.getValue(id) !== null;
     },
     enableHiding: false,
   },
