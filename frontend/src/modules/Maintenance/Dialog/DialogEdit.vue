@@ -69,7 +69,6 @@ const { isPending, mutate } = useMutation({
     if (data) {
       toast({
         title: "Maintenance Updated Success!",
-        description: `${data} have been updated.`,
         variant: "success",
       });
     }

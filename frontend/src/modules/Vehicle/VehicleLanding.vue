@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import DataTable from "@/components/DataTable/DataTable.vue";
 import Loading from "@/components/Loading/Loading.vue";
+import VehicleBanner from "@/modules/Maintenance/components/VehicleBanner.vue";
 import { useQuery } from "@tanstack/vue-query";
 import { columns } from "./columns.ts";
 import DataTableToolbar from "./components/DataTableToolbar.vue";
@@ -15,6 +16,7 @@ const { isLoading, data } = useQuery({
 <template>
   <Loading v-if="isLoading" />
   <div v-else class="h-full flex-1 flex-col md:flex">
+    <VehicleBanner />
     <DataTable :data="data || []" :columns="columns">
       <template #toolbar="{ table }">
         <DataTableToolbar :table="table" />

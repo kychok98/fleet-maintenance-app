@@ -23,7 +23,7 @@ const handleReset = () => {
 </script>
 
 <template>
-  <div class="mt-2 flex items-center justify-between">
+  <div class="flex items-center justify-between">
     <Button size="sm" class="h-8" @click="openAdd = true">
       <PlusIcon class="mr-1 h-4 w-4" />
       Add
@@ -37,5 +37,9 @@ const handleReset = () => {
     </div>
   </div>
 
-  <DialogAdd :open="openAdd" @update:open="(val: boolean) => (openAdd = val)" />
+  <DialogAdd
+    :key="JSON.stringify(openAdd)"
+    :open="openAdd"
+    @update:open="(val: boolean) => (openAdd = val)"
+  />
 </template>

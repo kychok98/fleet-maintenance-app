@@ -29,6 +29,7 @@ const { isPending, mutate } = useMutation({
   },
   onSettled: async (data) => {
     if (data) {
+      props.table.resetRowSelection();
       toast({
         title: data.message,
         variant: "success",
@@ -76,5 +77,9 @@ const handleReset = () => {
     </div>
   </div>
 
-  <DialogAdd :open="openAdd" @update:open="(val: boolean) => (openAdd = val)" />
+  <DialogAdd
+    :key="JSON.stringify(openAdd)"
+    :open="openAdd"
+    @update:open="(val: boolean) => (openAdd = val)"
+  />
 </template>
