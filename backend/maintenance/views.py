@@ -68,8 +68,9 @@ def maintenance_complete(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     maintenance_ids = serializer.validated_data['maintenance_ids']
-    Maintenance.objects.filter(id__in=maintenance_ids).update(
-        completion_date=timezone.now()
-    )
+    maintenances = Maintenance.objects.filter(id__in=maintenance_ids)
+    for maintenance in maintenances:
+        maintenance.completion_date = timezone.now()
+        maintenance.save()
 
     return Response({'message': 'Maintenance records marked as complete.'}, status=status.HTTP_200_OK)
