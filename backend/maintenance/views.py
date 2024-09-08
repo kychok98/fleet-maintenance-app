@@ -1,3 +1,4 @@
+from django.db.models import Case, When, Value
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -5,7 +6,8 @@ from rest_framework.response import Response
 
 from .decorators import maintenance_exists
 from .models import Maintenance
-from .serializers import MaintenanceSerializer, MaintenanceCompleteSerializer
+from .serializers import MaintenanceCompleteSerializer
+from .serializers import MaintenanceSerializer
 
 
 @api_view(['GET'])
@@ -23,8 +25,15 @@ def api_overview(request):
 @api_view(['GET'])
 def list_maintenance(request):
     sort_by = request.query_params.get('sort_by', '-schedule_date')
+    sort_fields = [field.strip() for field in sort_by.split(',')]
 
-    maintenances = Maintenance.objects.all().order_by(sort_by)
+    maintenances = Maintenance.objects.annotate(
+        completion_date_order=Case(
+            When(completion_date__isnull=True, then=Value(1)),
+            default=Value(0),
+        )
+    ).order_by(*sort_fields, '-completion_date_order', '-completion_date')
+
     serializer = MaintenanceSerializer(maintenances, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -70,7 +79,8 @@ def maintenance_complete(request):
     maintenance_ids = serializer.validated_data['maintenance_ids']
     maintenances = Maintenance.objects.filter(id__in=maintenance_ids)
     for maintenance in maintenances:
-        maintenance.completion_date = timezone.now()
-        maintenance.save()
+        if maintenance.completion_date is None:
+            maintenance.completion_date = timezone.now()
+            maintenance.save()
 
     return Response({'message': 'Maintenance records marked as complete.'}, status=status.HTTP_200_OK)
