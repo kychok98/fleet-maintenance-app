@@ -1,6 +1,9 @@
 from functools import wraps
-from django.http import JsonResponse
+
+from rest_framework.response import Response
+
 from .models import Vehicle
+
 
 def vehicle_exists(func):
     @wraps(func)
@@ -9,6 +12,6 @@ def vehicle_exists(func):
         try:
             vehicle = Vehicle.objects.get(id=pk)
         except Vehicle.DoesNotExist:
-            return JsonResponse({'error': 'Vehicle not found'}, status=404)
+            return Response({'error': 'Vehicle not found'}, status=404)
         return func(request, vehicle, *args, **kwargs)
     return wrapper

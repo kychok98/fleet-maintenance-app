@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
-from vehicles.models import Vehicle
 from .models import Maintenance
 
 
 class MaintenanceSerializer(serializers.ModelSerializer):
     vehicle_id = serializers.IntegerField(write_only=True)
     vehicle = serializers.PrimaryKeyRelatedField(read_only=True)
+    description = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = Maintenance
@@ -15,19 +15,22 @@ class MaintenanceSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         vehicle = data.get('vehicle')
-
-        # Ensure vehicle status is "Inactive" before allowing creation
         if vehicle and vehicle.status != 'Inactive':
             raise serializers.ValidationError('Only vehicles with status "Inactive" can create maintenance records.')
 
         return data
 
+    def validate_description(self, value):
+        if value:
+            return value
+        return 'Normal Maintenance'
+
     def create(self, validated_data):
-        vehicle = Maintenance.objects.create(
-            vehicle_id=validated_data['vehicle_id'],
+        maintenance = Maintenance.objects.create(
+            vehicle_id=self.context.get("vehicle_id"),
             schedule_date=validated_data['schedule_date'],
             description=validated_data['description'],
             schedule_type="manual",
             completion_date=None,
         )
-        return vehicle
+        return maintenance
